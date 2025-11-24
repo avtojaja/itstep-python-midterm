@@ -1,0 +1,10 @@
+{
+  "students": [
+    {
+      "type": "Student",
+      "name": "გიორგი",
+      "roll_number": 1,
+      "grade": "A"
+    }
+  ]
+}

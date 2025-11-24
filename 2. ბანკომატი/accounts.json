@@ -1,0 +1,28 @@
+{
+  "accounts": [
+    {
+      "account_number": "123456789012",
+      "fullname": "Giorgi Giorgadze",
+      "password": "123456",
+      "balance": 12.0
+    },
+    {
+      "account_number": "234567890123",
+      "fullname": "Nino Ninoshvili",
+      "password": "234567",
+      "balance": 500.0
+    },
+    {
+      "account_number": "345678901234",
+      "fullname": "Davit Davitiani",
+      "password": "345678",
+      "balance": 750.0
+    },
+    {
+      "account_number": "123123123123",
+      "fullname": "Nika Nikaia",
+      "password": "Nika123",
+      "balance": 332.0
+    }
+  ]
+}
