@@ -149,7 +149,7 @@ class ATM:
             print("არასწორი თანხა, ბალანსი 0.0")
         self.bank.add_account(account_number, fullname, password, balance)
 
-    def transfer(self):
+    def transfer(self, withdrawal_fee=0.5):
         target_acc_num = input("შეიყვანეთ მიმღები ანგარიშის ნომერი: ").strip()
         target_acc = self.bank.find_account(target_acc_num)
         if not target_acc:
@@ -160,10 +160,10 @@ class ATM:
         except ValueError:
             print("გთხოვთ შეიყვანოთ რიცხვი!")
             return
-        if self.current_account.withdraw(amount):
+        if self.current_account.withdraw(amount + withdrawal_fee):
             target_acc.deposit(amount)
             self.bank.save_accounts()
-            print(f"{amount} წარმატებით გადარიცხულია ანგარიშზე {target_acc_num}")
+            print(f"{amount} წარმატებით გადარიცხულია ანგარიშზე {target_acc_num} (საკომისიო: {withdrawal_fee})")
 
     def run(self):
         """აპლიკაციის მთავარი ციკლი"""
