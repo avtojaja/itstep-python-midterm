@@ -177,13 +177,22 @@ class StudentManager:
         return None
 
     def update_grade(self, roll_number: int, new_grade: str) -> bool:
-        """განაახლებს სტუდენტის შეფასებას."""
+        """განაახლებს სტუდენტის შეფასებას და საჭიროების შემთხვევაში ცვლის სტუდენტის ტიპს."""
         stud = self.find_by_roll_number(roll_number)
         if not stud:
             print("სტუდენტი ვერ მოიძებნა.")
             return False
         try:
             stud.grade = new_grade
+
+            # მოწმდება შეფასება, და თუ ის არ უდრის A, A+ ან A-, სტატუსი იცვლება ჩვეულებრივ სტუდენტად
+            if new_grade not in ["A", "A+", "A-"]:
+                if isinstance(stud, HonorsStudent):
+                    print(f"შეფასება '{new_grade}' არ არის წარჩინებული. სტუდენტი იცვლება ჩვეულებრივ სტუდენტად.")
+                    self.students.remove(stud)
+                    stud = Student(stud.name, stud.roll_number, stud.grade)
+                    self.students.append(stud)
+
             self.save_to_file()
             return True
         except ValueError as e:
