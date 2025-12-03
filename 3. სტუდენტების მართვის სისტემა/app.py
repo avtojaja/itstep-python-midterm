@@ -38,7 +38,7 @@ class Student:
     def roll_number(self, value: int):
         if not isinstance(value, int):
             raise ValueError("სიის ნომერი უნდა იყოს მთელი რიცხვი (int).")
-        if value <= 0:
+        if value < 0:
             raise ValueError("სიის ნომერი უნდა იყოს დადებითი მთელი რიცხვი.")
         self._roll_number = value
 
@@ -147,8 +147,17 @@ class StudentManager:
         except Exception as e:
             print(f"ფაილში შენახვის შეცდომა: {e}")
 
+    def get_max_roll_number(self) -> int:
+        """მაქსიმალური სიის ნომრის დადგენა სტუდენტების სიიდან. თუ სტუდენტების სია ცარიელია, ბრუნდება 0."""
+        if not self.students:
+            return 0
+        return max(student.roll_number for student in self.students)
+
     def add_student(self, student: Student) -> bool:
-        """ახალი სტუდენტის დამატება. მოწმდება თუ roll_number უკვე არსებობს."""
+        """ახალი სტუდენტის დამატება. სიის ნომერი გენერირდება ავტომატურად (მაქსიმუმს + 1)."""
+        if student.roll_number == 0:
+            student.roll_number = self.get_max_roll_number() + 1
+
         if self.find_by_roll_number(student.roll_number) is not None:
             print(f"Error: {student.roll_number} სიის ნომრით სტუდენტი უკვე არსებობს")
             return False
@@ -275,14 +284,13 @@ def main_menu():
             # ახალი სტუდენტის დამატება
             try:
                 name = input_nonempty_string("შეიყვანეთ სახელი და გვარი: ")
-                roll_number = input_roll_number_unique(manager)
                 grade = input_grade("შეიყვანეთ შეფასება (მაგ., A, B+, C-): ")
                 is_honor = input("არის სტუდენტი წარჩინებული? (y/N): ").strip().lower()
                 if is_honor == "y":
                     honors_note = input("შეიყვანეთ წარჩინებული სტუდენტის დახასიათება (არასავალდებულო): ").strip()
-                    stud = HonorsStudent(name, roll_number, grade, honors_note)
+                    stud = HonorsStudent(name, 0, grade, honors_note)
                 else:
-                    stud = Student(name, roll_number, grade)
+                    stud = Student(name, 0, grade)
                 if manager.add_student(stud):
                     print("სტუდენტი წარმატებით დაემატა.")
             except ValueError as e:
